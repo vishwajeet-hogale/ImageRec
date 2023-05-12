@@ -15,7 +15,7 @@ BATCH_SIZE = 32
 image_count = 244
 TRAIN_STEPS_PER_EPOCH = np.ceil((image_count*0.8/BATCH_SIZE)-1)
 VAL_STEPS_PER_EPOCH = np.ceil((image_count*0.2/BATCH_SIZE)-1)
-TrainingImagePath='./Face Images/Final Training Images'
+TrainingImagePath='C:/Users/NIDHSHE/Downloads/Face Images/Final Training Images'
 
 def make_dataset(BATCH_SIZE,TRAIN_STEPS_PER_EPOCH,VAL_STEPS_PER_EPOCHS):
         train_datagen = ImageDataGenerator(
@@ -90,7 +90,7 @@ def train_on_folder(training_set,TRAIN_STEPS_PER_EPOCH,VAL_STEPS_PER_EPOCH,Outpu
         print("###### Total Time Taken: ", round((EndTime-StartTime)/60), 'Minutes ######')
         return classifier
 
-def test(classifier,ResultMap,ImagePath='./Face Images/Final Testing Images/face4/3face4.jpg'):
+def test(classifier,ResultMap,ImagePath='C:/Users/NIDHSHE/Downloads/Face Images/Final Testing Images/face5/3face5.jpg'):
         test_image = tf.keras.utils.load_img(ImagePath,target_size=(64, 64))
         test_image = tf.keras.utils.img_to_array(test_image)
         test_image=np.expand_dims(test_image,axis=0)
@@ -107,20 +107,20 @@ if __name__ == "__main__":
                 classifier = train_on_folder(training_set,TRAIN_STEPS_PER_EPOCH,VAL_STEPS_PER_EPOCH,OutputNeurons)
                 # serialize model to JSON
                 model_json = classifier.to_json()
-                with open("./models/model.json", "w") as json_file:
+                with open("C:/Users/NIDHSHE/Image_Rec/ImageRec/Model/models/model.json", "w") as json_file:
                         json_file.write(model_json)
                 # serialize weights to HDF5
-                classifier.save_weights("./models/model.h5")
+                classifier.save_weights("C:/Users/NIDHSHE/Image_Rec/ImageRec/Model/models/model.h5")
                 print("Saved model to disk")
 
 
         # Test
-        json_file = open('./models/model.json', 'r')
+        json_file = open('C:/Users/NIDHSHE/Image_Rec/ImageRec/Model/models/model.json', 'r')
         loaded_model_json = json_file.read()
         json_file.close()
         classifier = model_from_json(loaded_model_json)
         # load weights into new model
-        classifier.load_weights("./models/model.h5")
+        classifier.load_weights("C:/Users/NIDHSHE/Image_Rec/ImageRec/Model/models/model.h5")
         print("Loaded model from disk")
         ResultMap = pickle.load(open('ResultsMap.pkl', 'rb'))
         test(classifier,ResultMap)
