@@ -12,10 +12,10 @@ from keras.preprocessing import image
 
 
 BATCH_SIZE = 32
-image_count = 244
+image_count = 68
 TRAIN_STEPS_PER_EPOCH = np.ceil((image_count*0.8/BATCH_SIZE)-1)
 VAL_STEPS_PER_EPOCH = np.ceil((image_count*0.2/BATCH_SIZE)-1)
-TrainingImagePath='C:/Users/NIDHSHE/Downloads/Face Images/Final Training Images'
+TrainingImagePath='C:/Users/NIDHSHE/Image_Rec/ImageRec/DataAugmentation/Image/Final Training Images'
 
 def make_dataset(BATCH_SIZE,TRAIN_STEPS_PER_EPOCH,VAL_STEPS_PER_EPOCHS):
         train_datagen = ImageDataGenerator(
@@ -70,6 +70,8 @@ def train_on_folder(training_set,TRAIN_STEPS_PER_EPOCH,VAL_STEPS_PER_EPOCH,Outpu
         classifier.add(MaxPool2D(pool_size=(2,2)))
         classifier.add(Convolution2D(64, kernel_size=(5, 5), strides=(1, 1), activation='relu'))
         classifier.add(MaxPool2D(pool_size=(2,2)))
+        classifier.add(Convolution2D(128, kernel_size=(5, 5), strides=(1, 1), activation='relu'))
+        classifier.add(MaxPool2D(pool_size=(2,2)))
         classifier.add(Flatten())
         classifier.add(Dense(64, activation='relu'))
         classifier.add(Dense(OutputNeurons, activation='softmax'))
@@ -82,7 +84,7 @@ def train_on_folder(training_set,TRAIN_STEPS_PER_EPOCH,VAL_STEPS_PER_EPOCH,Outpu
         classifier.fit_generator(
                             training_set,
                             steps_per_epoch=TRAIN_STEPS_PER_EPOCH,
-                            epochs=10,
+                            epochs=35,
                             validation_data=test_set,
                             validation_steps = VAL_STEPS_PER_EPOCH)
         
@@ -90,7 +92,7 @@ def train_on_folder(training_set,TRAIN_STEPS_PER_EPOCH,VAL_STEPS_PER_EPOCH,Outpu
         print("###### Total Time Taken: ", round((EndTime-StartTime)/60), 'Minutes ######')
         return classifier
 
-def test(classifier,ResultMap,ImagePath='C:/Users/NIDHSHE/Downloads/Face Images/Final Testing Images/face5/3face5.jpg'):
+def test(classifier,ResultMap,ImagePath='C:/Users/NIDHSHE/Image_Rec/ImageRec/DataAugmentation/Image/Final Testing Images/Vishwajeet/Vs_aug12.jpg'):
         test_image = tf.keras.utils.load_img(ImagePath,target_size=(64, 64))
         test_image = tf.keras.utils.img_to_array(test_image)
         test_image=np.expand_dims(test_image,axis=0)
