@@ -92,7 +92,7 @@ def train_on_folder(training_set,TRAIN_STEPS_PER_EPOCH,VAL_STEPS_PER_EPOCH,Outpu
         print("###### Total Time Taken: ", round((EndTime-StartTime)/60), 'Minutes ######')
         return classifier
 
-def test(classifier,ResultMap,ImagePath='C:/Users/NIDHSHE/Image_Rec/ImageRec/DataAugmentation/Image/Final Testing Images/Vishwajeet/Vs_aug12.jpg'):
+def test(classifier,ResultMap,ImagePath='C:/Users/NIDHSHE/Image_Rec/ImageRec/DataAugmentation/Image/Final Testing Images/Gaurav/3face2.jpg'):
         test_image = tf.keras.utils.load_img(ImagePath,target_size=(64, 64))
         test_image = tf.keras.utils.img_to_array(test_image)
         test_image=np.expand_dims(test_image,axis=0)
