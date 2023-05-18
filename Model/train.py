@@ -110,9 +110,15 @@ def test(classifier,ResultMap,ImagePath='../DataAugmentation/Image/Final Testing
         return ResultMap[np.argmax(result)]
 def loop_dir_extract_faces(classifier,ResultMap,path = LOOP_DIR):
     for i in os.listdir(path):
+<<<<<<< HEAD
         if(i.endswith(".jpg") or i.endswith(".jpeg")):
             for ind,img in enumerate(ef.get_faces(path + "/" + i)):
                     print(i)
+=======
+        if(i.endswith(".jpg")):
+            for ind,img in enumerate(ef.get_faces(path + "/" + i)):
+                #     print(img)
+>>>>>>> 6945d36fe1d0859b40bdb351eb6535ec3cc7f739
                     cv2.imwrite("./Output/img.jpg",img)
                     prediction = test(classifier,ResultMap,"./Output/img.jpg")
                     print(prediction)
