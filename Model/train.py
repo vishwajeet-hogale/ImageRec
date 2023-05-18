@@ -20,8 +20,12 @@ TRAIN_STEPS_PER_EPOCH = np.ceil((image_count*0.8/BATCH_SIZE)-1)
 VAL_STEPS_PER_EPOCH = np.ceil((image_count*0.2/BATCH_SIZE)-1)
 TrainingImagePath='../DataAugmentation/Image/Final Training Images'
 TestImagePath='../DataAugmentation/Image/Final Testing Images'
+<<<<<<< HEAD
 # LOOP_DIR = "../DataAugmentation/Image/Final Training Images/Gaurav"
 LOOP_DIR = "./Input"
+=======
+LOOP_DIR = "../DataAugmentation/Image/Final Training Images/Gaurav"
+>>>>>>> ab0aaf10ad39a6b5a74c902796face83516a614d
 Face_dict = {}
 
 
