@@ -116,9 +116,9 @@ def loop_dir_extract_faces(classifier,ResultMap,path = LOOP_DIR):
                     prediction = test(classifier,ResultMap,"./Output/img.jpg")
                     print(prediction)
                     if prediction in Face_dict:
-                        Face_dict[prediction].append(path + "/" + i)
+                        Face_dict[prediction].add(path + "/" + i)
                     else:
-                        Face_dict[prediction] = [path + "/" + i]
+                        Face_dict[prediction] = {path + "/" + i}
 if __name__ == "__main__":
         train = False
         Test = False
