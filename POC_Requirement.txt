@@ -13,8 +13,8 @@ Model based work
 
 
 POC work
-4) Loop through all picctures
-5) Extract all faces from each picture
+4) Loop through all pictures
+5) Extract all faces from each picture -> run the model -> 
 6) {name : ["pic_name",....]}
 7) Input your name : 
 8) Run through this dict; get all values for the input key which is input_name
