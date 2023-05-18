@@ -1,4 +1,6 @@
 import time
+import os
+import cv2
 import pickle
 import numpy as np
 import tensorflow as tf
@@ -9,13 +11,18 @@ from keras.layers import MaxPool2D
 from keras.layers import Flatten
 from keras.layers import Dense
 from keras.preprocessing import image
-
+# from extractfaces import extractfaces as ef
+import extractfaces as ef
 
 BATCH_SIZE = 32
 image_count = 68
 TRAIN_STEPS_PER_EPOCH = np.ceil((image_count*0.8/BATCH_SIZE)-1)
 VAL_STEPS_PER_EPOCH = np.ceil((image_count*0.2/BATCH_SIZE)-1)
-TrainingImagePath='C:/Users/NIDHSHE/Image_Rec/ImageRec/DataAugmentation/Image/Final Training Images'
+TrainingImagePath='../DataAugmentation/Image/Final Training Images'
+TestImagePath='../DataAugmentation/Image/Final Testing Images'
+LOOP_DIR = "../DataAugmentation/Image/Final Training Images/Gaurav"
+Face_dict = {}
+
 
 def make_dataset(BATCH_SIZE,TRAIN_STEPS_PER_EPOCH,VAL_STEPS_PER_EPOCHS):
         train_datagen = ImageDataGenerator(
@@ -37,7 +44,7 @@ def make_dataset(BATCH_SIZE,TRAIN_STEPS_PER_EPOCH,VAL_STEPS_PER_EPOCHS):
         
         # Generating the Testing Data
         test_set = test_datagen.flow_from_directory(
-                TrainingImagePath,
+                TestImagePath,
                 target_size=(64, 64),
                 batch_size=32,
                 class_mode='categorical')
@@ -92,16 +99,29 @@ def train_on_folder(training_set,TRAIN_STEPS_PER_EPOCH,VAL_STEPS_PER_EPOCH,Outpu
         print("###### Total Time Taken: ", round((EndTime-StartTime)/60), 'Minutes ######')
         return classifier
 
-def test(classifier,ResultMap,ImagePath='C:/Users/NIDHSHE/Image_Rec/ImageRec/DataAugmentation/Image/Final Testing Images/Gaurav/3face2.jpg'):
+def test(classifier,ResultMap,ImagePath='../DataAugmentation/Image/Final Testing Images/Gaurav/3face2.jpg'):
         test_image = tf.keras.utils.load_img(ImagePath,target_size=(64, 64))
         test_image = tf.keras.utils.img_to_array(test_image)
         test_image=np.expand_dims(test_image,axis=0)
         result=classifier.predict(test_image,verbose=0)
         print('####'*10)
         print('Prediction is: ',ResultMap[np.argmax(result)])
-
+        return ResultMap[np.argmax(result)]
+def loop_dir_extract_faces(classifier,ResultMap,path = LOOP_DIR):
+    for i in os.listdir(path):
+        if(i.endswith(".jpg")):
+            for ind,img in enumerate(ef.get_faces(path + "/" + i)):
+                #     print(img)
+                    cv2.imwrite("./Output/img.jpg",img)
+                    prediction = test(classifier,ResultMap,"./Output/img.jpg")
+                    print(prediction)
+                    if prediction in Face_dict:
+                        Face_dict[prediction].append(path + "/" + i)
+                    else:
+                        Face_dict[prediction] = [path + "/" + i]
 if __name__ == "__main__":
         train = False
+        Test = False
         classifier = None
 
         if train :
@@ -109,21 +129,26 @@ if __name__ == "__main__":
                 classifier = train_on_folder(training_set,TRAIN_STEPS_PER_EPOCH,VAL_STEPS_PER_EPOCH,OutputNeurons)
                 # serialize model to JSON
                 model_json = classifier.to_json()
-                with open("C:/Users/NIDHSHE/Image_Rec/ImageRec/Model/models/model.json", "w") as json_file:
+                with open("./models/model.json", "w") as json_file:
                         json_file.write(model_json)
                 # serialize weights to HDF5
-                classifier.save_weights("C:/Users/NIDHSHE/Image_Rec/ImageRec/Model/models/model.h5")
+                classifier.save_weights("./models/model.h5")
                 print("Saved model to disk")
 
 
         # Test
-        json_file = open('C:/Users/NIDHSHE/Image_Rec/ImageRec/Model/models/model.json', 'r')
+        json_file = open('./models/model.json', 'r')
         loaded_model_json = json_file.read()
         json_file.close()
         classifier = model_from_json(loaded_model_json)
         # load weights into new model
-        classifier.load_weights("C:/Users/NIDHSHE/Image_Rec/ImageRec/Model/models/model.h5")
+        classifier.load_weights("./models/model.h5")
         print("Loaded model from disk")
         ResultMap = pickle.load(open('ResultsMap.pkl', 'rb'))
-        test(classifier,ResultMap)
+        if Test:
+                test(classifier,ResultMap)
+
+        loop_dir_extract_faces(classifier,ResultMap)
+        print(Face_dict)
+        os.remove("./Output/img.jpg")
         
