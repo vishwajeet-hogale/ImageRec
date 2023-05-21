@@ -6,10 +6,7 @@ import numpy as np
 import tensorflow as tf
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential,model_from_json
-from keras.layers import Convolution2D
-from keras.layers import MaxPool2D
-from keras.layers import Flatten
-from keras.layers import Dense
+from keras.layers import Convolution2D,MaxPool2D,Flatten,Dense
 from keras.preprocessing import image
 # from extractfaces import extractfaces as ef
 import extractfaces as ef
