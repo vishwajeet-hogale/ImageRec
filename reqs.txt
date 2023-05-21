@@ -1,0 +1,7 @@
+1) Write backend code 
+	- endpoints
+		- get_your_pictures - Input : person's name. Copy all pictures from input  directory to output directory
+	- Handle the case where the Face_dict is empty 
+		- if yes run train.py flow, then do the copy process after prediction and return output
+		- else do the copy process after prediction and return output
+2) Frontend : Change incident management frontend : Only  dropdown is enough with a submit button
