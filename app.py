@@ -9,6 +9,8 @@ app = Flask(__name__)
 
 app.route("/predict",methods = ["POST"])
 def predict():
+    global classifier
+    global ResultMap
     if not classifier or not ResultMap :
         classifier,ResultMap = services.load_model()
     if 'image' not in request.files:
