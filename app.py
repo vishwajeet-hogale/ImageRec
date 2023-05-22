@@ -21,5 +21,5 @@ def predict():
     response.headers['Content-Type'] = 'text/plain'
     return response
 
-if __name == "__main__":
+if __name__ == "__main__":
     app.run()
