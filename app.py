@@ -1,27 +1,40 @@
-from flask import Flask, request, make_response
-from services import services
+from flask import Flask, request, make_response,render_template,request,flash,url_for,redirect
+from Model import services
 
-classifier = None
-ResultMap = None
-
+FaceDict = {}
+keys = {}
 
 app = Flask(__name__)
 
-app.route("/predict",methods = ["POST"])
+# app.config['SECRET_KEY'] = 'the random string'
+
+@app.route("/",methods=["GET"])
+def index():
+    global FaceDict
+    global keys
+    if not FaceDict :
+        FaceDict = services.train()
+    keys = FaceDict.keys()
+    return render_template("index.html",keys = keys)
+@app.route("/predict",methods = ["POST","GET"])
 def predict():
-    global classifier
-    global ResultMap
-    if not classifier or not ResultMap :
-        classifier,ResultMap = services.load_model()
-    if 'image' not in request.files:
-        return 'No image file in the request', 400
-    image_file = request.files['image']
-    save_path = './Output/img.jpg'
-    image_file.save(save_path)
-    prediction = services.predict_image(classifier,ResultMap,save_path)
-    response = make_response(prediction)
-    response.headers['Content-Type'] = 'text/plain'
-    return response
+    global FaceDict
+    # if not FaceDict :
+    #     FaceDict = services.train()
+    if request.method == "POST":
+        name = request.form['name']
+        # return {"Hello":all_image_paths = FaceDict[request.form["name"]]}
+        pred_list = None
+        try:
+            pred_list = FaceDict[str(name)]
+        except:
+            FaceDict = services.train()
+            pred_list = FaceDict[name]
+       
+            services.copy_files(name,[i.split("/")[-1] for i in pred_list])
+           
+        return render_template("index.html",all_image_paths = pred_list,keys=FaceDict.keys())
+    return render_template("index.html",keys = keys)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug = True,port = 5000)

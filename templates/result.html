@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="container pb-3">
+        <h1 style="color:white;">Similar Ticket Results</h1>
+        <hr style="color:white;">
+        <div class="row align-content-center px-5">
+        <div class="col-md-12 mx-auto ">
+        {% with messages = get_flashed_messages()  %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+        <div class = "row">
+            <div class = "col-3">
+                <h4 style="color:white;"> Created Ticket Details</h4><br/>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">INC{{number}}</h5>
+                        <p class="card-text"><b>Short Description : </b>{{text}}</p>
+                        <p class="card-text"><b>Resolver : </b>{{resolver}}</p>
+                        <p class="card-text"><b>Creator : </b>{{creator}}</p>
+                        <a href="#" class="btn btn-primary">View Ticket</a>
+                    </div>
+                </div>
+                <br><br>
+                
+            </div>
+            <div class="col-2"></div>
+            <div class = "col-8">
+                <div class="cards-list">
+                        <h4 style="color:white;">Most Similar Incidents : Accuracy level {{sim}}%</h4>
+                        <h4 style="color:white;">Recent resolver : {{resolver}}</h4>
+                        <table class="table table-striped table-hover table-bordered table-sm bg-white">
+                        <thead>
+                            <tr>
+                            <td>Number</td>
+                           
+                            <td>Short Description</td>
+                            <td>Resolution Notes</td>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ticket in tickets %}
+                            <tr>
+                            <td>{{ticket.0}}</td>
+                           
+                            <td>{{ticket.11}}</td>
+                            <td>{{ticket.13}}</td>
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        </table>
+                </div>
+            </div>
+        </div>
+    
+
+    </div>
+{% endblock %}
