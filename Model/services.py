@@ -7,26 +7,29 @@ import cv2
 import tensorflow as tf
 import time
 
-LOOP_DIR = ".\\DataAugmentation\\group_image"
-OUTPUT_DIR = ".\\Output"
+LOOP_DIR = "./DataAugmentation/group_image"
+OUTPUT_DIR = "./Output"
 # source_dir = ""
 def copy_files(name,image_list):
         source_dir = './DataAugmentation/group_image'
         destination_dir = f'./Output/{name}'
-        os.mkdir(destination_dir)
+        try:
+                os.mkdir(destination_dir)
+        except:
+                pass
         # image_list = ['image1.jpg', 'image2.jpg', 'image3.jpg']
 
         # Iterate over the list of images
         for image_file in image_list:
         # Construct the source and destination file paths
-                source_file = os.path.join(source_dir, image_file)
+                source_file = source_dir + "/" + image_file
                 # timestamp = str(int(time.time()))
-                destination_file = os.path.join(destination_dir, image_file)
+                destination_file = destination_dir + "/" + image_file
                 # Use shutil.copy2() to copy the image file
-                try:
-                        shutil.copy2(source_file, destination_file)
-                except:
-                        continue
+                # try:
+                shutil.copy2(source_file, destination_file)
+                # except:
+                        # continue
 def get_faces(image_path='../DataAugmentation/Image/Final Testing Images/Gaurav/gk_aug10.jpg'):
     image = cv2.imread(image_path)
     # print(image)
