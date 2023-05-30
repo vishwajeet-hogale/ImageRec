@@ -6,6 +6,7 @@ import numpy as np
 import cv2
 import tensorflow as tf
 import time
+import pickle
 
 LOOP_DIR = "./DataAugmentation/group_image"
 OUTPUT_DIR = "./Output"
@@ -85,3 +86,13 @@ def train():
         return Face_dict
 
 # print(ef)
+def write_face_dict(FaceDict,path):
+        with open(path + "/" + "FaceDict.pkl","wb") as f:
+                pickle.dump(FaceDict,f)
+
+def load_face_dict(path):
+        file_name = path + "/" + "FaceDict.pkl"
+        FaceDict = pickle.load(open(file_name, 'rb'))
+        return FaceDict
+        
+                
