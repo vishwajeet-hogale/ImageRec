@@ -11,8 +11,6 @@ app = Flask(__name__)
 
 @app.route("/",methods=["GET"])
 def index():
-    # services.write_face_dict(FaceDict,"./Output")
-    # keys = FaceDict.keys()
     return render_template("index.html",keys = keys)
 @app.route("/predict",methods = ["POST","GET"])
 def predict():

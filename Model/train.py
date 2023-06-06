@@ -56,7 +56,7 @@ def make_dataset(BATCH_SIZE,TRAIN_STEPS_PER_EPOCH,VAL_STEPS_PER_EPOCHS):
             ResultMap[faceValue]=faceName
         
         # Saving the face map for future reference
-        
+        print(ResultMap)
         with open("ResultsMap.pkl", 'wb') as fileWriteStream:
             pickle.dump(ResultMap, fileWriteStream)
         

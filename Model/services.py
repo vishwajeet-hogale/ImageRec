@@ -56,7 +56,14 @@ def load_model():
     classifier.load_weights("./Model/models/model.h5")
     ResultMap = pickle.load(open('./Model/ResultsMap.pkl', 'rb'))
     return classifier,ResultMap
-
+def get_pred(result,ResultMap):
+        result = result.tolist()
+        preds = [float(round(i,8)) for i in result[0]]
+        print(preds)
+        new_res = max(preds)
+        if new_res < 0.50:
+                return "Unknown"
+        return ResultMap[preds.index(new_res)]
 def predict_image(classifier,ResultMap,ImagePath='../DataAugmentation/Image/Final Testing Images/Gaurav/3face2.jpg'):
         test_image = tf.keras.utils.load_img(ImagePath,target_size=(64, 64))
         test_image = tf.keras.utils.img_to_array(test_image)
@@ -64,7 +71,9 @@ def predict_image(classifier,ResultMap,ImagePath='../DataAugmentation/Image/Fina
         result=classifier.predict(test_image,verbose=0)
         print('####'*10)
         print('Prediction is: ',ResultMap[np.argmax(result)])
-        return ResultMap[np.argmax(result)]
+        print("Result : ",result)
+        # return ResultMap[np.argmax(result)]
+        return get_pred(result,ResultMap)
 def loop_dir_extract_faces(classifier,ResultMap,path = LOOP_DIR):
         Face_dict = {}
         for i in os.listdir(path):
